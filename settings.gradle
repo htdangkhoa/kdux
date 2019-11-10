@@ -1,0 +1,2 @@
+include ':app', ':kdux'
+rootProject.name='Kdux'
