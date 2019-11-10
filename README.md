@@ -61,6 +61,12 @@ dependencies {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_demo)
+            
+            DemoAction.updateLoadingAction(true) { store.dispatch(it) }
+            
+            Handler().postDelayed({
+                DemoAction.updateLoadingAction(false) { store.dispatch(it) }
+            }, 3000)
         }
 
         override fun onStart() {
