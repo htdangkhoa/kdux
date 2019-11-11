@@ -29,7 +29,7 @@ dependencies {
         data class IS_LOADING(val payload: Boolean = false): DemoAction()
 
         companion object {
-            fun updateLoadingAction(isLoading: Boolean, dispatch: (action: Action) -> Unit) {
+            fun updateLoadingAction(isLoading: Boolean, dispatch: Dispatch) {
                 return dispatch(IS_LOADING(isLoading))
             }
         }
