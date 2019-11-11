@@ -1,38 +1,34 @@
-package com.github.htdangkhoa.demo.ui.list
+package com.github.htdangkhoa.demo.ui.counter
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.github.htdangkhoa.demo.R
 import com.github.htdangkhoa.kdux.Enhancer
 import com.github.htdangkhoa.kdux.Store
-import com.github.htdangkhoa.kdux.applyMiddleware
 import com.github.htdangkhoa.kdux.composeWithDevTools
 import com.github.htdangkhoa.kdux.devtool.KDuxDevToolAction
-import com.github.htdangkhoa.kdux.logger.KduxLogger
-import kotlinx.android.synthetic.main.activity_list.*
+import kotlinx.android.synthetic.main.activity_counter.*
 
-class ListActivity: AppCompatActivity(), Enhancer<ListState> {
-    private val store: Store<ListState> by lazy {
+class CounterActivity: AppCompatActivity(), Enhancer<CounterState> {
+    private val store: Store<CounterState> by lazy {
         composeWithDevTools(
             Store(
-                ListReducer(),
-                ListState(),
-                applyMiddleware(KduxLogger())
+                CounterReducer(),
+                CounterState()
             )
         )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list)
+        setContentView(R.layout.activity_counter)
 
-        btnFetch.setOnClickListener {
-            ListAction.fetchTodosAction {
-                store.dispatch(
-                    it
-                )
-            }
+        btnIncrease.setOnClickListener {
+            CounterAction.increaseAction { store.dispatch(it) }
+        }
+
+        btnDecrease.setOnClickListener {
+            CounterAction.decreaseAction { store.dispatch(it) }
         }
 
         btnUndo.setOnClickListener {
@@ -54,13 +50,13 @@ class ListActivity: AppCompatActivity(), Enhancer<ListState> {
         store.subscribe(this)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
 
         store.unsubscribe(this)
     }
 
-    override fun enhance(state: ListState) {
-        progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+    override fun enhance(state: CounterState) {
+        txtNumber.text = "${state.number}"
     }
 }

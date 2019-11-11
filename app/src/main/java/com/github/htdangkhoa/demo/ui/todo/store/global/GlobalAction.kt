@@ -1,4 +1,4 @@
-package com.github.htdangkhoa.demo.global
+package com.github.htdangkhoa.demo.ui.todo.store.global
 
 import com.github.htdangkhoa.kdux.Action
 

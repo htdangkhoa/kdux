@@ -2,6 +2,8 @@ package com.github.htdangkhoa.kdux
 
 import com.github.htdangkhoa.kdux.devtool.KDuxDevToolReducer
 
+typealias Dispatch = (action: Action) -> Unit
+
 inline fun <reified S: State> combineReducers(vararg reducers: Reducer<S>): Reducer<S> {
     return object: Reducer<S> {
         override fun reduce(state: S, action: Action): S {
