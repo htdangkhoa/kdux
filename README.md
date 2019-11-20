@@ -14,7 +14,7 @@ allprojects {
 Add the dependency:
 ```gradle
 dependencies {
-    implementation 'com.github.htdangkhoa:kdux:1.0.0'
+    implementation 'com.github.htdangkhoa:kdux:<latest_version>'
 }
 ```
 
