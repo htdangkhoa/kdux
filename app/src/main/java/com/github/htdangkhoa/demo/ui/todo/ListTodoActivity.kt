@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.github.htdangkhoa.demo.R
 import com.github.htdangkhoa.demo.model.TodoModel
+import com.github.htdangkhoa.demo.ui.base.BaseActivity
 import com.github.htdangkhoa.demo.ui.todo.addtodo.AddTodoActivity
 import com.github.htdangkhoa.demo.ui.todo.store.TodoAction
 import com.github.htdangkhoa.demo.ui.todo.store.TodoReducer
@@ -22,7 +22,7 @@ import com.github.htdangkhoa.kdux.applyMiddleware
 import com.github.htdangkhoa.kdux.logger.KduxLogger
 import kotlinx.android.synthetic.main.activity_list_todo.*
 
-class ListTodoActivity: AppCompatActivity(), Enhancer<TodoState> {
+class ListTodoActivity: BaseActivity(), Enhancer<TodoState> {
     companion object {
         const val REQUEST_ADD_TODO = 999
     }
@@ -47,7 +47,11 @@ class ListTodoActivity: AppCompatActivity(), Enhancer<TodoState> {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_todo)
 
-        TodoAction.loadTodosAction { store.dispatch(it) }
+//        TodoAction.loadTodosAction { store.dispatch(it) }
+
+        launch {
+            TodoAction.awaitLoadTodosAction { store.dispatch(it) }
+        }
 
         with(recyclerView) {
             adapter = this@ListTodoActivity.adapter
