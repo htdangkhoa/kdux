@@ -8,7 +8,6 @@ import com.github.htdangkhoa.kdux.Dispatch
 import com.github.kittinunf.fuel.coroutines.awaitObjectResponse
 import com.github.kittinunf.fuel.gson.gsonDeserializer
 import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.result.Result
 
 sealed class TodoAction: Action {
     data class LOAD_TODOS_SUCCESS(
@@ -28,40 +27,6 @@ sealed class TodoAction: Action {
     ): TodoAction()
 
     companion object {
-        @Deprecated("Should use awaitLoadTodosAction instead of loadTodosAction.")
-        fun loadTodosAction(dispatch: Dispatch) {
-            GlobalAction.updateLoadingAction(true, dispatch)
-
-            "/todos".httpGet().responseObject(gsonDeserializer<MutableList<TodoModel>>()) { _, _, result ->
-                GlobalAction.updateLoadingAction(false, dispatch)
-
-                when (result) {
-                    is Result.Success -> {
-                        dispatch(
-                            LOAD_TODOS_SUCCESS(
-                                result.get()
-                            )
-                        )
-                    }
-                    is Result.Failure -> {
-                        dispatch(
-                            LOAD_TODOS_FAILURE(
-                                result.getException()
-                            )
-                        )
-                    }
-                }
-            }.join()
-        }
-
-        fun addTodoAction(todoModel: TodoModel, dispatch: Dispatch) {
-            dispatch(ADD_TODO(todoModel))
-        }
-
-        fun removeTodoAction(todoModel: TodoModel, dispatch: Dispatch) {
-            dispatch(REMOVE_TODO(todoModel))
-        }
-
         suspend fun awaitLoadTodosAction(dispatch: Dispatch) {
             GlobalAction.updateLoadingAction(true, dispatch)
 
@@ -82,6 +47,14 @@ sealed class TodoAction: Action {
             Log.w("awaitLoadTodosAction","Task 3")
 
             GlobalAction.updateLoadingAction(false, dispatch)
+        }
+
+        fun addTodoAction(todoModel: TodoModel, dispatch: Dispatch) {
+            dispatch(ADD_TODO(todoModel))
+        }
+
+        fun removeTodoAction(todoModel: TodoModel, dispatch: Dispatch) {
+            dispatch(REMOVE_TODO(todoModel))
         }
     }
 }

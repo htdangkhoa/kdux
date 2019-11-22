@@ -23,6 +23,9 @@ class TodoViewModel: ViewModel() {
         TodoAction.awaitLoadTodosAction { store.dispatch(it) }
     }
 
+    fun addTodoAction(todo: TodoModel) =
+        TodoAction.addTodoAction(todo) { store.dispatch(it) }
+
     fun removeTodoAction(todo: TodoModel) =
         TodoAction.removeTodoAction(todo) { store.dispatch(it) }
 

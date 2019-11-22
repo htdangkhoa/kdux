@@ -5,7 +5,7 @@ import com.github.htdangkhoa.kdux.Reducer
 
 class CounterReducer: Reducer<CounterState> {
     override fun reduce(state: CounterState, action: Action): CounterState {
-        return when(action) {
+        return when (action) {
             is CounterAction.INCREASE -> {
                 state.copy(number = state.number + 1)
             }

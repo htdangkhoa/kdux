@@ -19,6 +19,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.todo_viewmodel.TodoVMActivity"></activity>
         <activity android:name=".ui.todo.addtodo.AddTodoActivity" />
+        <activity android:name=".ui.todo_viewmodel.addtodo.AddTodoActivity" />
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

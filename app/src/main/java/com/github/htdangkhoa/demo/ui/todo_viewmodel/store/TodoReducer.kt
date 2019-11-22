@@ -10,7 +10,7 @@ class TodoReducer: Reducer<TodoState> {
         val todos = mutableListOf<TodoModel>()
         todos.addAll(state.todos)
 
-        return when(action) {
+        return when (action) {
             is GlobalAction.IS_LOADING -> {
                 state.copy(isLoading = action.payload)
             }

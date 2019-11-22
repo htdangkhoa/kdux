@@ -1,8 +1,11 @@
 # kdux [![Release](https://jitpack.io/v/htdangkhoa/kdux.svg)](https://jitpack.io/#htdangkhoa/kdux)
-Redux for Android &amp; Kotlin
+
+Android + Kotlin + Redux = ❤️
 
 ## Installation
+
 Add the JitPack repository to your root build.gradle at the end of repositories:
+
 ```gradle
 allprojects {
     repositories {
@@ -11,7 +14,9 @@ allprojects {
     }
 }
 ```
+
 Add the dependency:
+
 ```gradle
 dependencies {
     implementation 'com.github.htdangkhoa:kdux:<latest_version>'
@@ -19,117 +24,165 @@ dependencies {
 ```
 
 ## Usage
-- State:
-    ```kotlin
-    data class DemoState(isLoading: Boolean): State
-    ```
-- Action:
-    ```kotlin
-    sealed class DemoAction: Action {
-        data class IS_LOADING(val payload: Boolean = false): DemoAction()
 
-        companion object {
-            fun updateLoadingAction(isLoading: Boolean, dispatch: Dispatch) {
-                return dispatch(IS_LOADING(isLoading))
-            }
-        }
-    }
-    ```
-- Reducer:
-    ```kotlin
-    class DemoReducer: Reducer<DemoState> {
-        override fun reduce(state: DemoState, action: Action): DemoState {
-            return when(action) {
-                is DemoAction.IS_LOADING -> {
-                    state.copy(isLoading = action.payload)
-                }
-                else -> state
-            }
-        }
-    }
-    ```
-- Activity:
-    ```kotlin
-    class DemoActivity: AppCompatActivity(), Enhancer<DemoState> {
-        private val store: Store<DemoState> by lazy {
-            Store(
-                DemoReducer(),
-                DemoState()
-            )
-        }
+- **State:**
+  ```kotlin
+  data class CounterState(val number: Int = 0): State
+  ```
+- **Action:**
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(R.layout.activity_demo)
-            
-            DemoAction.updateLoadingAction(true) { store.dispatch(it) }
-            
-            Handler().postDelayed({
-                DemoAction.updateLoadingAction(false) { store.dispatch(it) }
-            }, 3000)
-        }
+  ```kotlin
+  sealed class CounterAction: Action {
+      object INCREASE: CounterAction()
 
-        override fun onStart() {
-            super.onStart()
+      object DECREASE: CounterAction()
 
-            store.subscribe(this)
-        }
+      companion object {
+          fun increaseAction(dispatch: Dispatch) = dispatch(INCREASE)
 
-        override fun onStop() {
-            super.onStop()
+          fun decreaseAction(dispatch: Dispatch) = dispatch(DECREASE)
+      }
+  }
+  ```
 
-            store.unsubscribe(this)
-        }
+- **Reducer:**
 
-        override fun enhance(state: DemoState) {
-            progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
-        }
-    }
-    ```
-- Middleware:
-    ```kotlin
-    class DemoMiddleware<S: State>: Middleware<S> {
-        override fun onBeforeDispatch(store: Store<S>, action: Action) {
-            // Doing somthings...
-        }
-        
-        override fun onDispatch(store: Store<S>, action: Action, next: Dispatcher) {
-            // Doing somthings...
-            
-            next.dispatch(action)
-        }
-        
-        override fun onAfterDispatch(store: Store<S>, action: Action) {
-            // Doing somthings...
-        }
-    }
-    ```
+  ```kotlin
+  class CounterReducer: Reducer<CounterState> {
+      override fun reduce(state: CounterState, action: Action): CounterState {
+          return when (action) {
+              CounterAction.INCREASE -> state.copy(number = state.number + 1)
+
+              CounterAction.DECREASE -> state.copy(number = state.number - 1)
+
+              else -> state
+          }
+      }
+  }
+  ```
+
+- **Activity:**
+
+  ```kotlin
+  class CounterActivity: AppCompatActivity(), Enhancer<CounterState> {
+      private val store: Store<CounterState> by lazy {
+          Store(
+              CounterReducer(),
+              CounterState()
+              // applyMiddleware(...)
+          )
+      }
+
+      override fun onCreate(savedInstanceState: Bundle?) {
+          super.onCreate(savedInstanceState)
+          setContentView(R.layout.activity_counter)
+
+          btnIncrease.setOnClickListener {
+              CounterAction.increaseAction { store.dispatch(it) }
+          }
+
+          btnDecrease.setOnClickListener {
+              CounterAction.decreaseAction { store.dispatch(it) }
+          }
+      }
+
+      override fun onStart() {
+          super.onStart()
+
+          store.subscribe(this)
+      }
+
+      override fun onStop() {
+          super.onStop()
+
+          store.unsubscribe(this)
+      }
+
+      override fun enhance(state: CounterState) {
+          txtNumber.text = "${state.number}"
+      }
+  }
+  ```
+
+- **Middleware:**
+  ```kotlin
+  class DemoMiddleware<S: State>: Middleware<S> {
+      override fun onBeforeDispatch(store: Store<S>, action: Action) {
+          // Doing somthings...
+      }
+
+      override fun onDispatch(store: Store<S>, action: Action, next: Dispatcher) {
+          // Doing somthings...
+
+          next.dispatch(action)
+      }
+
+      override fun onAfterDispatch(store: Store<S>, action: Action) {
+          // Doing somthings...
+      }
+  }
+  ```
+
+## Examples
+
+- [Counter (with DevTools)](https://github.com/htdangkhoa/kdux/tree/master/app/src/main/java/com/github/htdangkhoa/demo/ui/counter)
+- [Todo](https://github.com/htdangkhoa/kdux/tree/master/app/src/main/java/com/github/htdangkhoa/demo/ui/todo)
+- [Todo (Coroutines + ViewModel)](https://github.com/htdangkhoa/kdux/tree/master/app/src/main/java/com/github/htdangkhoa/demo/ui/todo_viewmodel)
 
 ## Bonus
-- Logger:
-    ```kotlin
-    private val store: Store<DemoState> by lazy {
-        Store(
-            DemoReducer(),
-            DemoState(),
-            applyMiddleware(KduxLogger())
-        )
-    }
-    ```
-- DevTools:
-    ```kotlin
-    private val store: Store<DemoState> by lazy {
-        composeWithDevTools(
-            Store(DemoReducer(), DemoState())
-        )
-    }
-    
-    // UNDO
-    store.dispatch(KDuxDevToolAction.UNDO)
-    
-    // REDO
-    store.dispatch(KDuxDevToolAction.REDO)
-    
-    // RESET
-    store.dispatch(KDuxDevToolAction.RESET)
-    ```
+
+- **Logger:**
+  ```kotlin
+  private val store: Store<CounterState> by lazy {
+      Store(
+          DemoReducer(),
+          CounterState(),
+          applyMiddleware(KduxLogger())
+      )
+  }
+  ```
+- **DevTools:**
+  ```kotlin
+  private val store: Store<CounterState> by lazy {
+      composeWithDevTools(
+          Store(
+              DemoReducer(),
+              CounterState()
+              // applyMiddleware(...)
+          )
+      )
+  }
+
+  // UNDO
+  store.dispatch(KDuxDevToolAction.UNDO)
+
+  // REDO
+  store.dispatch(KDuxDevToolAction.REDO)
+
+  // RESET
+  store.dispatch(KDuxDevToolAction.RESET)
+  ```
+
+## License
+
+    MIT License
+
+    Copyright (c) 2019 Huỳnh Trần Đăng Khoa
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
