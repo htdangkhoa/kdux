@@ -1,3 +1,5 @@
 package com.github.htdangkhoa.kdux
 
-interface Action
+interface Action {
+    fun getName(): String = this::class.java.simpleName
+}

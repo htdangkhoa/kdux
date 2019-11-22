@@ -1,6 +1,6 @@
 package com.github.htdangkhoa.kdux
 
-import com.github.htdangkhoa.kdux.devtool.KDuxDevToolReducer
+import com.github.htdangkhoa.kdux.devtool.KduxDevToolReducer
 
 typealias Dispatch = (action: Action) -> Unit
 
@@ -32,7 +32,7 @@ inline fun <reified S: State> composeWithDevTools(store: Store<S>): Store<S> {
 
     val reducer = combineReducers(
         store.reducer,
-        KDuxDevToolReducer(initialState)
+        KduxDevToolReducer(initialState)
     )
 
     val middlewares = store.middlewares

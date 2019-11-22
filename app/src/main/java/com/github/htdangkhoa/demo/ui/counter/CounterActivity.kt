@@ -6,7 +6,7 @@ import com.github.htdangkhoa.demo.R
 import com.github.htdangkhoa.kdux.Enhancer
 import com.github.htdangkhoa.kdux.Store
 import com.github.htdangkhoa.kdux.composeWithDevTools
-import com.github.htdangkhoa.kdux.devtool.KDuxDevToolAction
+import com.github.htdangkhoa.kdux.devtool.KduxDevToolAction
 import kotlinx.android.synthetic.main.activity_counter.*
 
 class CounterActivity: AppCompatActivity(), Enhancer<CounterState> {
@@ -32,15 +32,15 @@ class CounterActivity: AppCompatActivity(), Enhancer<CounterState> {
         }
 
         btnUndo.setOnClickListener {
-            store.dispatch(KDuxDevToolAction.UNDO)
+            store.dispatch(KduxDevToolAction.UNDO)
         }
 
         btnRedo.setOnClickListener {
-            store.dispatch(KDuxDevToolAction.REDO)
+            store.dispatch(KduxDevToolAction.REDO)
         }
 
         btnReset.setOnClickListener {
-            store.dispatch(KDuxDevToolAction.RESET)
+            store.dispatch(KduxDevToolAction.RESET)
         }
     }
 

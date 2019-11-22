@@ -4,7 +4,7 @@ import com.github.htdangkhoa.kdux.Action
 import com.github.htdangkhoa.kdux.Reducer
 import com.github.htdangkhoa.kdux.State
 
-class KDuxDevToolReducer<S: State>(private val initialState: S):
+class KduxDevToolReducer<S: State>(private val initialState: S):
     Reducer<S> {
     private var currentStateIndex = -1
 
@@ -15,7 +15,7 @@ class KDuxDevToolReducer<S: State>(private val initialState: S):
 
     override fun reduce(state: S, action: Action): S {
         when(action) {
-            is KDuxDevToolAction.UNDO -> {
+            is KduxDevToolAction.UNDO -> {
                 currentStateIndex -= 1
 
                 if (currentStateIndex < 0) {
@@ -26,7 +26,7 @@ class KDuxDevToolReducer<S: State>(private val initialState: S):
 
                 present = stateTimeLines[currentStateIndex]
             }
-            is KDuxDevToolAction.REDO -> {
+            is KduxDevToolAction.REDO -> {
                 currentStateIndex += 1
 
                 if (currentStateIndex > stateTimeLines.size - 1) {
@@ -37,7 +37,7 @@ class KDuxDevToolReducer<S: State>(private val initialState: S):
 
                 present = stateTimeLines[currentStateIndex]
             }
-            is KDuxDevToolAction.RESET -> {
+            is KduxDevToolAction.RESET -> {
                 currentStateIndex = -1
 
                 present = initialState

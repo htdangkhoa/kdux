@@ -1,5 +1,7 @@
 package com.github.htdangkhoa.kdux
 
+import com.github.htdangkhoa.kdux.middlewares.logger.KduxLogger
+
 class Store<S: State>(
     val reducer: Reducer<S>,
     val initialState: S,
@@ -25,6 +27,23 @@ class Store<S: State>(
                 }
             }
         })
+
+        /* --- MAKE SURE THE LOGGER IS ALWAYS LAST ON THE LIST --- */
+        var indexOfLogger = -1
+
+        middlewares.forEachIndexed { index, middleware ->
+            if (middleware::class.java == KduxLogger::class.java) {
+                indexOfLogger = index
+            }
+        }
+
+        if (indexOfLogger != -1) {
+            val logger = middlewares[indexOfLogger]
+
+            middlewares.add(logger)
+
+            middlewares.removeAt(indexOfLogger)
+        }
 
         middlewares.reversed().forEach { middleware ->
             val next = dispatchers.first()

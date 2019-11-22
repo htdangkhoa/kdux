@@ -19,7 +19,7 @@ import com.github.htdangkhoa.demo.ui.todo.store.TodoState
 import com.github.htdangkhoa.kdux.Enhancer
 import com.github.htdangkhoa.kdux.Store
 import com.github.htdangkhoa.kdux.applyMiddleware
-import com.github.htdangkhoa.kdux.logger.KduxLogger
+import com.github.htdangkhoa.kdux.middlewares.logger.KduxLogger
 import kotlinx.android.synthetic.main.activity_list_todo.*
 
 class ListTodoActivity: AppCompatActivity(), Enhancer<TodoState> {

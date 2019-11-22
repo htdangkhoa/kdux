@@ -104,7 +104,8 @@ dependencies {
   }
   ```
 
-- **Middleware:**
+- **Middleware:** [(List middlewares)](https://github.com/htdangkhoa/kdux/tree/master/kdux/src/main/java/com/github/htdangkhoa/kdux/middlewares)
+
   ```kotlin
   class DemoMiddleware<S: State>: Middleware<S> {
       override fun onBeforeDispatch(store: Store<S>, action: Action) {
@@ -135,32 +136,40 @@ dependencies {
   ```kotlin
   private val store: Store<CounterState> by lazy {
       Store(
-          DemoReducer(),
-          CounterState(),
+          ...,
           applyMiddleware(KduxLogger())
       )
   }
   ```
+- **Debounce:**
+  ```kotlin
+  private val store: Store<CounterState> by lazy {
+      Store(
+          ...,
+          applyMiddleware(KduxDebounce(debounce = 500)) // Range of debounce from 0 to 30000.
+      )
+  }
+  ```
 - **DevTools:**
+
   ```kotlin
   private val store: Store<CounterState> by lazy {
       composeWithDevTools(
           Store(
-              DemoReducer(),
-              CounterState()
+              ...,
               // applyMiddleware(...)
           )
       )
   }
 
   // UNDO
-  store.dispatch(KDuxDevToolAction.UNDO)
+  store.dispatch(KduxDevToolAction.UNDO)
 
   // REDO
-  store.dispatch(KDuxDevToolAction.REDO)
+  store.dispatch(KduxDevToolAction.REDO)
 
   // RESET
-  store.dispatch(KDuxDevToolAction.RESET)
+  store.dispatch(KduxDevToolAction.RESET)
   ```
 
 ## License
