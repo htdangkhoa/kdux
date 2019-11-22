@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.github.htdangkhoa.demo.R
 import com.github.htdangkhoa.demo.ui.counter.CounterActivity
 import com.github.htdangkhoa.demo.ui.todo.ListTodoActivity
+import com.github.htdangkhoa.demo.ui.todo_viewmodel.TodoVMActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +27,15 @@ class MainActivity : AppCompatActivity() {
         btnGoToToDo.setOnClickListener {
             startActivity(
                 Intent(this, ListTodoActivity::class.java)
+                    .apply {
+                        addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    }
+            )
+        }
+
+        btnGoToToDoViewModel.setOnClickListener {
+            startActivity(
+                Intent(this, TodoVMActivity::class.java)
                     .apply {
                         addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     }
