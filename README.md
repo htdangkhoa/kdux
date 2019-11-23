@@ -1,4 +1,8 @@
-# kdux [![Release](https://jitpack.io/v/htdangkhoa/kdux.svg)](https://jitpack.io/#htdangkhoa/kdux)
+# kdux
+
+![Platform](https://img.shields.io/badge/Platform-Android%206.0-36da7e?logo=android)
+![Kotlin](https://img.shields.io/badge/Kotlin-1.3.50-orange?logo=kotlin)
+[![Release](https://jitpack.io/v/htdangkhoa/kdux.svg)](https://jitpack.io/#htdangkhoa/kdux)
 
 Android + Kotlin + Redux = ❤️
 
