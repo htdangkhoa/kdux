@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.todo_viewmodel.TodoVMActivity"></activity>
+        <activity android:name=".ui.counter_thunk.CounterThunkActivity"></activity>
+        <activity android:name=".ui.todo_viewmodel.TodoVMActivity" />
         <activity android:name=".ui.todo.addtodo.AddTodoActivity" />
         <activity android:name=".ui.todo_viewmodel.addtodo.AddTodoActivity" />
         <activity android:name=".ui.main.MainActivity">

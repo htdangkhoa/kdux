@@ -1,5 +1,4 @@
 # kdux
-
 ![Platform](https://img.shields.io/badge/Platform-Android%206.0-36da7e?logo=android)
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.3.50-orange?logo=kotlin)
 [![Release](https://jitpack.io/v/htdangkhoa/kdux.svg)](https://jitpack.io/#htdangkhoa/kdux)
@@ -7,9 +6,7 @@
 Android + Kotlin + Redux = ❤️
 
 ## Installation
-
 Add the JitPack repository to your root build.gradle at the end of repositories:
-
 ```gradle
 allprojects {
     repositories {
@@ -20,7 +17,6 @@ allprojects {
 ```
 
 Add the dependency:
-
 ```gradle
 dependencies {
     implementation 'com.github.htdangkhoa:kdux:<latest_version>'
@@ -28,13 +24,12 @@ dependencies {
 ```
 
 ## Usage
-
 - **State:**
   ```kotlin
   data class CounterState(val number: Int = 0): State
   ```
-- **Action:**
 
+- **Action:**
   ```kotlin
   sealed class CounterAction: Action {
       object INCREASE: CounterAction()
@@ -50,7 +45,6 @@ dependencies {
   ```
 
 - **Reducer:**
-
   ```kotlin
   class CounterReducer: Reducer<CounterState> {
       override fun reduce(state: CounterState, action: Action): CounterState {
@@ -66,7 +60,6 @@ dependencies {
   ```
 
 - **Activity:**
-
   ```kotlin
   class CounterActivity: AppCompatActivity(), Enhancer<CounterState> {
       private val store: Store<CounterState> by lazy {
@@ -109,7 +102,6 @@ dependencies {
   ```
 
 - **Middleware:** [(List middlewares)](https://github.com/htdangkhoa/kdux/tree/master/kdux/src/main/java/com/github/htdangkhoa/kdux/middlewares)
-
   ```kotlin
   class DemoMiddleware<S: State>: Middleware<S> {
       override fun onBeforeDispatch(store: Store<S>, action: Action) {
@@ -129,12 +121,45 @@ dependencies {
   ```
 
 ## Examples
-
 - [Counter (with DevTools)](https://github.com/htdangkhoa/kdux/tree/master/app/src/main/java/com/github/htdangkhoa/demo/ui/counter)
+- [Counter (with Thunk)](https://github.com/htdangkhoa/kdux/tree/master/app/src/main/java/com/github/htdangkhoa/demo/ui/counter_thunk)
 - [Todo](https://github.com/htdangkhoa/kdux/tree/master/app/src/main/java/com/github/htdangkhoa/demo/ui/todo)
 - [Todo (Coroutines + ViewModel)](https://github.com/htdangkhoa/kdux/tree/master/app/src/main/java/com/github/htdangkhoa/demo/ui/todo_viewmodel)
 
 ## Bonus
+- **Thunk:**
+  ```kotlin
+  // Action
+  sealed class CounterAction: Action {
+      object INCREASE: CounterAction()
+
+      object DECREASE: CounterAction()
+
+      companion object {
+          fun increaseAction(): Action = KduxThunkAction(object: Thunk {
+              override fun invoke(dispatcher: Dispatcher, state: State) {
+                  dispatcher.dispatch(INCREASE)
+              }
+          })
+
+          fun decreaseAction(): Action = KduxThunkAction(object: Thunk {
+              override fun invoke(dispatcher: Dispatcher, state: State) {
+                  dispatcher.dispatch(DECREASE)
+              }
+          })
+      }
+  }
+
+  // Store
+  private val store = Store(
+      ...,
+      applyMiddleware(KduxThunk())
+  )
+
+  store.dispatch(increaseAction())
+
+  store.dispatch(decreaseAction())
+  ```
 
 - **Logger:**
   ```kotlin
@@ -145,6 +170,7 @@ dependencies {
       )
   }
   ```
+
 - **Debounce:**
   ```kotlin
   private val store: Store<CounterState> by lazy {
@@ -154,8 +180,8 @@ dependencies {
       )
   }
   ```
-- **DevTools:**
 
+- **DevTools:**
   ```kotlin
   private val store: Store<CounterState> by lazy {
       composeWithDevTools(
@@ -177,7 +203,6 @@ dependencies {
   ```
 
 ## License
-
     MIT License
 
     Copyright (c) 2019 Huỳnh Trần Đăng Khoa
