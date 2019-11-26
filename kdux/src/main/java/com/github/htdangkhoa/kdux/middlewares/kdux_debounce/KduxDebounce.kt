@@ -39,7 +39,5 @@ class KduxDebounce<S: State>(
         }
     }
 
-    override fun onAfterDispatch(store: Store<S>, action: Action) {
-
-    }
+    override fun onAfterDispatch(store: Store<S>, action: Action) = Unit
 }
