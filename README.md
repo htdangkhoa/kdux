@@ -1,9 +1,20 @@
-# kdux
-![Platform](https://img.shields.io/badge/Platform-Android%206.0-36da7e?logo=android)
-![Kotlin](https://img.shields.io/badge/Kotlin-1.3.50-orange?logo=kotlin)
-[![Release](https://jitpack.io/v/htdangkhoa/kdux.svg)](https://jitpack.io/#htdangkhoa/kdux)
+<h1 align='center'>
+    Kdux
+</h1>
 
-Android + Kotlin + Redux = ❤️
+<p align='center'>Android + Kotlin + Redux = :heart:</p>
+
+<p align="center">
+  <a href="https://img.shields.io/badge/Platform-Android%206.0-36da7e?logo=android">
+    <img src="https://img.shields.io/badge/Platform-Android%206.0-36da7e?logo=android" alt="platform" />
+  </a>
+  <a href="https://img.shields.io/badge/Kotlin-1.3.50-orange?logo=kotlin">
+    <img src="https://img.shields.io/badge/Kotlin-1.3.50-orange?logo=kotlin" alt="language" />
+  </a>
+  <a href="https://jitpack.io/#htdangkhoa/kdux">
+    <img src="https://jitpack.io/v/htdangkhoa/kdux.svg" alt="downloads" />
+  </a>
+</p>
 
 ## Installation
 Add the JitPack repository to your root build.gradle at the end of repositories:
